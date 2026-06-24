@@ -81,7 +81,23 @@ h2, h3 {
     flex: 1;
 }
 
-/* NOVO: Estilo Galeria Fato ou Fake */
+/* Chat Fale Conosco */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+#resposta-chat {
+    border-left: 4px solid var(--primaria);
+    background-color: var(--bg-principal);
+    padding: 15px;
+    border-radius: 4px;
+    font-weight: normal;
+}
+
+/* Galeria Fato ou Fake */
 .galeria-container {
     display: flex;
     gap: 16px;
@@ -118,7 +134,7 @@ h2, h3 {
 .img-fake { background: linear-gradient(135deg, #3b82f6, #8b5cf6); }
 .img-real { background: linear-gradient(135deg, #10b981, #059669); }
 
-/* NOVO: Estilo Gerador de Senhas */
+/* Gerador de Senhas */
 .gerador-container {
     display: flex;
     gap: 12px;
@@ -133,7 +149,7 @@ h2, h3 {
     letter-spacing: 1px;
 }
 
-/* NOVO: Contador Globais e Selects */
+/* Contador e Seleções */
 .contador-impacto {
     font-size: 1.1rem;
     font-weight: bold;
@@ -154,7 +170,6 @@ select {
     font-size: 1rem;
 }
 
-/* Formulários e Inputs Gerais */
 form {
     display: flex;
     flex-direction: column;

@@ -74,7 +74,7 @@ function inicializarChatBot() {
         },
         {
             chaves: ["fake news", "desinformacao", "noticia", "mentira", "falsa"],
-            resposta: "🤖 CyberGuard: Notícias falsas automatizadas usam apelo emocional urgente. Sempre consulte canais de checagem confiáveis."
+            resposta: "🤖 CyberGuard: Notícias falsas automatizadas usam apelo emotional urgente. Sempre consulte canais de imprensa consolidados."
         },
         {
             chaves: ["senha", "proteger", "seguranca", "seguro", "hacker"],
@@ -133,7 +133,7 @@ function verificarImagem(ehHumana) {
 
 // Gerador de Senhas
 function inicializarGeradorSenha() {
-    const btn = document.getElementById("btn-gerar-senha");
+    const btn = document.getElementById("btn-generar-senha");
     const input = document.getElementById("input-senha-gerada");
     
     btn.addEventListener("click", () => {

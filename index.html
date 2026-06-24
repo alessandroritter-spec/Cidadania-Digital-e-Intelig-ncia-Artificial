@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conexão Segura: Cidadania Digital e IA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>Cidadania<span>Digital</span></h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#simulador">Ligação Fake</a></li>
+                <li><a href="#verificador">Verificar Link</a></li>
+                <li><a href="#jogo">Desafio das Fases</a></li>
+            </ul>
+        </nav>
+        <button id="btn-acessibilidade" onclick="toggleModoEscuro()">Mudar Tema 🌓</button>
+    </header>
+
+    <main>
+        <section id="sobre">
+            <h2>IA e Desinformação: O Perigo das Deepfakes</h2>
+            <p>As inteligências artificiais mudaram o mundo, mas também trouxeram desafios criativos e perigosos, como as <strong>deepfakes</strong> (vídeos e áudios manipulados que parecem reais) e a desinformação automatizada. Ser um cidadão digital é saber identificar essas armadilhas.</p>
+        </section>
+
+        <section id="simulador">
+            <h2>⚠️ Laboratório de Ameaças: A Ligação Fake</h2>
+            <p>Golpistas usam clonagem de voz por IA para simular parentes ou autoridades. Ouça o exemplo abaixo e tente notar as falhas robóticas:</p>
+            
+            <div class="audio-container">
+                <audio id="audio-fake" controls>
+                    <source src="audio/ligacao_fake.mp3" type="audio/mpeg">
+                    Seu navegador não suporta o elemento de áudio.
+                </audio>
+                <div class="Dica-audio">
+                    <p><em>Fique atento a pausas não naturais e falta de entonação emocional!</em></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="verificador">
+            <h2>🔍 Verificador Instantâneo de Links</h2>
+            <p>Recebeu uma notícia bombástica com um link estranho? Cole ele aqui para analisar a estrutura do domínio.</p>
+            
+            <div class="validador-form">
+                <label for="input-url">Insira a URL suspeita:</label>
+                <input type="url" id="input-url" placeholder="https://exemplo-noticia-fake.com/ganhe-premios" required>
+                <button id="btn-verificar">Analisar Link</button>
+                
+                <div id="resultado-verificacao" class="hidden"></div>
+            </div>
+        </section>
+
+        <section id="jogo">
+            <h2>🎮 Missão Mídia Segura: O Jogo</h2>
+            <p>Passe pelas fases detectando o que é real e o que foi gerado por Inteligência Artificial!</p>
+            
+            <div class="placar">
+                <span>Fase Atual: <strong id="fase-atual">1</strong>/3</span> | 
+                <span>Pontuação: <strong id="pontuacao">0</strong></span>
+            </div>
+
+            <div id="container-fases">
+                <div class="card-fase">
+                    <h3 id="titulo-fase">Fase 1: O Vídeo do Político</h3>
+                    <p id="descricao-fase">Você recebeu um vídeo de um candidato confessando um crime na véspera da eleição. O movimento da boca parece levemente borrado. O que você faz?</p>
+                    
+                    <div class="alternativas">
+                        <button class="btn-alternativa" onclick="processarResposta(false)">Compartilho imediatamente nos grupos da família.</button>
+                        <button class="btn-alternativa" onclick="processarResposta(true)">Não compartilho e procuro em portais de notícias confiáveis.</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comunidade">
+            <h2>Formulário de Conscientização Comunitária</h2>
+            <p>Ajude-nos a mapear o impacto das Deepfakes na sua região. Suas respostas geram estatísticas de segurança!</p>
+            
+            <form id="form-pesquisa">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" placeholder="Seu nome completo" required>
+
+                <label for="experiencia">Você já viu alguma Deepfake ou notícia falsa gerada por IA nesta semana?</label>
+                <select id="experiencia" required>
+                    <option value="">Selecione...</option>
+                    <option value="sim">Sim, com frequência</option>
+                    <option value="raramente">Raramente/Uma vez</option>
+                    <option value="nao">Não, nenhuma</option>
+                </select>
+
+                <button type="submit">Enviar Dados de Impacto</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="mascote-bot">
+        <div class="balao-dialogo">
+            <p id="texto-bot">Olá! Sou o <strong>CyberGuard</strong>. Precisa de ajuda para identificar uma Deepfake hoje?</p>
+        </div>
+        <div class="icone-bot">🤖</div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Projeto Cidadania Digital e IA. Desenvolvido para fins educacionais.</p>
+    </footer>
+
+    <script href="js/script.js"></script>
+</body>
+</html>

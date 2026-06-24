@@ -1,189 +1,166 @@
-/* ==========================================
-   CONFIGURAÇÕES GERAIS E PALETA DE CORES
-   ========================================== */
+/* Variáveis de Cores e Temas */
 :root {
-    --bg-principal: #0b0f19;
-    --bg-card: #161f30;
-    --texto: #f3f4f6;
-    --neon-azul: #00f2fe;
-    --neon-roxo: #4facfe;
-    --cor-alerta: #ff4757;
-    --cor-sucesso: #2ed573;
-}
-
-.modo-claro {
     --bg-principal: #f0f2f5;
     --bg-card: #ffffff;
-    --texto: #1f2937;
-    --neon-azul: #0066cc;
-    --neon-roxo: #7928ca;
+    --texto: #1a1a1a;
+    --primaria: #2563eb;
+    --secundaria: #10b981;
+    --alerta: #ef4444;
+    --borda: #e5e7eb;
 }
 
+[data-theme="dark"] {
+    --bg-principal: #0f172a;
+    --bg-card: #1e293b;
+    --texto: #f8fafc;
+    --borda: #334155;
+}
+
+/* Reset e Estrutura Geral */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
     background-color: var(--bg-principal);
     color: var(--texto);
-    transition: background-color 0.3s, color 0.3s;
-    padding-bottom: 80px;
+    line-height: 1.6;
+    padding: 20px;
 }
 
-/* ==========================================
-   LAYOUT DO HEADER COM FLEXBOX
-   ========================================== */
 header {
-    background-color: var(--bg-card);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 5%;
-    border-bottom: 2px solid var(--neon-roxo);
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    padding: 10px 0;
+    border-bottom: 2px solid var(--borda);
 }
 
-header h1 span {
-    color: var(--neon-azul);
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-}
-
-nav ul li a {
-    color: var(--texto);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-nav ul li a:hover {
-    color: var(--neon-azul);
-}
-
-#btn-acessibilidade {
-    background: linear-gradient(45deg, var(--neon-roxo), var(--neon-azul));
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* Container de Conteúdo */
 main {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
+    max-width: 800px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
 }
 
-section {
+/* Cartões de Layout */
+.card {
     background-color: var(--bg-card);
-    padding: 30px;
+    border: 1px solid var(--borda);
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    margin-bottom: 15px;
-    color: var(--neon-azul);
+h2, h3 {
+    margin-bottom: 12px;
+    color: var(--primaria);
 }
 
-p {
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Componentes de Formulário e Área do Jogo */
-.validador-form, form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-input[type="url"], input[type="text"], select {
-    width: 100%;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #334155;
-    background-color: rgba(0, 0, 0, 0.3);
-    color: var(--texto);
-}
-
-.alternativas {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.btn-alternativa {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--texto);
-    text-align: left;
-    padding: 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-alternativa:hover {
-    background: rgba(79, 172, 254, 0.2);
-    border-left: 4px solid var(--neon-azul);
-}
-
-/* Mascote Bot Fixo na Tela */
-#mascote-bot {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+/* Mascote Interativo */
+.mascote-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    z-index: 1000;
+    gap: 16px;
+}
+
+.avatar-bot {
+    font-size: 3rem;
+    animation: pulse 2s infinite;
 }
 
 .balao-dialogo {
-    background-color: var(--bg-card);
-    border: 1px solid var(--neon-azul);
-    padding: 12px;
-    border-radius: 12px;
-    max-width: 220px;
+    background-color: var(--bg-principal);
+    padding: 16px;
+    border-radius: 8px;
+    position: relative;
+    flex: 1;
 }
 
-.icone-bot {
-    font-size: 40px;
-    background: var(--bg-card);
-    border: 2px solid var(--neon-roxo);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+/* Formulários e Inputs */
+form {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
 }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: var(--bg-card);
-    margin-top: 40px;
+input, button {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--borda);
+    font-size: 1rem;
 }
 
-.hidden { display: none !important; }
+input {
+    background-color: var(--bg-principal);
+    color: var(--texto);
+}
 
-/* Responsividade Básica */
-@media (max-width: 768px) {
-    header { flex-direction: column; gap: 15px; text-align: center; }
-    nav ul { gap: 10px; }
+button {
+    cursor: pointer;
+    background-color: var(--primaria);
+    color: white;
+    font-weight: bold;
+    border: none;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.btn-sucess { background-color: var(--secundaria); }
+.btn-perigo { background-color: var(--alerta); }
+
+/* Classes Utilitárias */
+.hidden { display: none; }
+.resultado {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+.valido { background-color: rgba(16, 185, 129, 0.2); border: 1px solid var(--secundaria); }
+.invalido { background-color: rgba(239, 68, 68, 0.2); border: 1px solid var(--alerta); }
+.status { font-style: italic; margin-top: 8px; color: var(--primaria); }
+
+/* Layout Alternativas Jogo */
+.opcoes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-opcao {
+    background-color: var(--bg-principal);
+    color: var(--texto);
+    text-align: left;
+    border: 1px solid var(--borda);
+}
+
+.btn-opcao:hover {
+    background-color: var(--primaria);
+    color: white;
+}
+
+/* Animações */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Responsividade (Media Queries) */
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    .mascote-container { flex-direction: column; text-align: center; }
+    header { flex-direction: column; gap: 10px; }
 }

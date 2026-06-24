@@ -11,7 +11,6 @@
     --cor-sucesso: #2ed573;
 }
 
-/* Variáveis para o Modo Escuro/Claro via JS */
 .modo-claro {
     --bg-principal: #f0f2f5;
     --bg-card: #ffffff;
@@ -31,11 +30,11 @@ body {
     background-color: var(--bg-principal);
     color: var(--texto);
     transition: background-color 0.3s, color 0.3s;
-    padding-bottom: 80px; /* Espaço para o mascote fixo */
+    padding-bottom: 80px;
 }
 
 /* ==========================================
-   LAYOUT E CORPO (FLEXBOX)
+   LAYOUT DO HEADER COM FLEXBOX
    ========================================== */
 header {
     background-color: var(--bg-card);
@@ -60,7 +59,6 @@ nav ul li a {
     color: var(--texto);
     text-decoration: none;
     font-weight: 600;
-    transition: color 0.2s;
 }
 
 nav ul li a:hover {
@@ -75,14 +73,9 @@ nav ul li a:hover {
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
-    transition: transform 0.2s;
 }
 
-#btn-acessibilidade:hover {
-    transform: scale(1.05);
-}
-
-/* Container Principal */
+/* Container de Conteúdo */
 main {
     max-width: 900px;
     margin: 40px auto;
@@ -110,27 +103,7 @@ p {
     margin-bottom: 15px;
 }
 
-/* ==========================================
-   COMPONENTES ESPECÍFICOS (ÁUDIO, FORM, JOGO)
-   ========================================== */
-
-/* Player de Áudio */
-.audio-container {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-audio {
-    width: 100%;
-    max-width: 400px;
-}
-
-/* Verificador de Links e Formulários */
+/* Componentes de Formulário e Área do Jogo */
 .validador-form, form {
     display: flex;
     flex-direction: column;
@@ -142,43 +115,8 @@ input[type="url"], input[type="text"], select {
     padding: 12px;
     border-radius: 6px;
     border: 1px solid #334155;
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.3);
     color: var(--texto);
-    font-size: 16px;
-}
-
-button {
-    padding: 12px 20px;
-    border-radius: 6px;
-    border: none;
-    background-color: var(--neon-roxo);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s, cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-button:hover {
-    filter: brightness(1.2);
-}
-
-#resultado-verificacao {
-    padding: 15px;
-    border-radius: 6px;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.seguro { background-color: rgba(46, 213, 115, 0.2); color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
-.perigo { background-color: rgba(255, 71, 87, 0.2); color: var(--cor-alerta); border: 1px solid var(--cor-alerta); }
-
-/* Área do Jogo */
-.placar {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    text-align: center;
 }
 
 .alternativas {
@@ -191,19 +129,20 @@ button:hover {
 .btn-alternativa {
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--texto);
     text-align: left;
-    transition: all 0.2s ease;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .btn-alternativa:hover {
-    background: linear-gradient(90deg, rgba(79, 172, 254, 0.2), transparent);
+    background: rgba(79, 172, 254, 0.2);
     border-left: 4px solid var(--neon-azul);
-    padding-left: 25px;
 }
 
-/* ==========================================
-   MASCOTE BOT (FIXO NA TELA)
-   ========================================== */
+/* Mascote Bot Fixo na Tela */
 #mascote-bot {
     position: fixed;
     bottom: 20px;
@@ -220,7 +159,6 @@ button:hover {
     padding: 12px;
     border-radius: 12px;
     max-width: 220px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .icone-bot {
@@ -233,13 +171,6 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    animation: flutuar 3s ease-in-out infinite;
-}
-
-@keyframes flutuar {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
 }
 
 footer {
@@ -249,15 +180,10 @@ footer {
     margin-top: 40px;
 }
 
-/* Utilitários */
 .hidden { display: none !important; }
 
-/* ==========================================
-   RESPONSIVIDADE (AULA 4 - MEDIA QUERIES)
-   ========================================== */
+/* Responsividade Básica */
 @media (max-width: 768px) {
     header { flex-direction: column; gap: 15px; text-align: center; }
-    nav ul { gap: 10px; flex-wrap: wrap; justify-content: center; }
-    #mascote-bot { bottom: 10px; right: 10px; }
-    .balao-dialogo { max-width: 150px; font-size: 13px; }
+    nav ul { gap: 10px; }
 }

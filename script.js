@@ -2,56 +2,56 @@
 const dadosJogo = [
     {
         fase: 1,
-        pergunta: "Você recebe um vídeo de um candidato político confessando um crime, mas os movimentos dos lábios dele parecem levemente dessincronizados do áudio e os olhos piscam de forma artificial. O que é mais provável?",
+        pergunta: "Você recebe um vídeo de um candidato confessando um crime, mas os movimentos dos lábios estão dessincronizados do áudio e as piscadas de olhos são artificiais. O que é?",
         opcoes: [
-            { texto: "É uma gravação secreta real e 100% confiável.", correta: false },
-            { texto: "É um indício clássico de mídia gerada por IA (Deepfake).", correta: true },
-            { texto: "É apenas um problema técnico na câmera do celular.", correta: false }
+            { texto: "É uma gravação secreta real e confiável.", correta: false },
+            { texto: "É um indício clássico de mídia simulada por IA (Deepfake).", correta: true },
+            { texto: "É apenas um defeito físico na lente da câmera antiga.", correta: false }
         ],
-        dicaMascote: "🤖 CyberGuard diz: Preste atenção nos detalhes! Falhas de iluminação ao redor dos olhos e boca costumam denunciar rostos clonados eletronicamente."
+        dicaMascote: "🤖 CyberGuard: Preste atenção nos detalhes! Falhas de iluminação ao redor da boca costumam denunciar rostos clonados."
     },
     {
         fase: 2,
-        pergunta: "Um portal de notícias desconhecido afirma que uma nova lei cancelará todas as contas de internet que não pagarem uma taxa extra de segurança digital hoje. Qual o procedimento seguro?",
+        pergunta: "Um portal de notícias desconhecido afirma que uma nova lei vai cortar sua internet caso não pague uma taxa digital hoje. O que fazer?",
         opcoes: [
-            { texto: "Ignorar a mensagem e verificar em portais jornalísticos consolidados.", correta: true },
-            { texto: "Acessar correndo para pagar antes que sua internet caia.", correta: false },
-            { texto: "Compartilhar imediatamente em todos os grupos de amigos.", correta: false }
+            { texto: "Ignorar a mensagem e verificar em portais jornalísticos oficiais.", correta: true },
+            { texto: "Acessar correndo para pagar e evitar o bloqueio.", correta: false },
+            { texto: "Compartilhar em todos os grupos de contatos por aviso.", correta: false }
         ],
-        dicaMascote: "🤖 CyberGuard diz: Golpistas criam situações de urgência artificial para fazer você agir pelo impulso e pelo medo. Respire e cheque!"
+        dicaMascote: "🤖 CyberGuard: Golpistas criam falsa urgência para fazer você agir pelo medo. Respire e cheque!"
     },
     {
         fase: 3,
-        pergunta: "O que caracteriza a 'Cidadania Digital' ativa diante do ecossistema moderno da Inteligência Artificial?",
+        pergunta: "O que caracteriza a 'Cidadania Digital' ativa diante do avanço moderno da Inteligência Artificial?",
         opcoes: [
-            { texto: "Acreditar em todos os áudios recebidos por aplicativos de mensagens.", correta: false },
-            { texto: "Não usar a internet para evitar cair em mentiras automatizadas.",  correta: false },
+            { texto: "Acreditar em áudios de encaminhados múltiplos.", correta: false },
+            { texto: "Ficar fora da internet para nunca ver conteúdos sintéticos.",  correta: false },
             { texto: "Consumir conteúdo criticamente, checar fontes e responsabilizar-se pelo que compartilha.", correta: true }
         ],
-        dicaMascote: "🤖 CyberGuard diz: Você chegou ao teste final da sua consciência digital. Use suas ferramentas!"
+        dicaMascote: "🤖 CyberGuard: Você chegou ao teste final da sua consciência digital. Use suas ferramentas!"
     }
 ];
 
-// Estado do Aplicativo
 let faseAtual = 0;
 let pontuacao = 0;
+let contadorDenuncias = 24;
 let sinteseVoz = window.speechSynthesis;
 let expressaoVoz = null;
 
-// Inicializadores de Eventos no carregamento do DOM
 document.addEventListener("DOMContentLoaded", () => {
     inicializarTema();
     inicializarVerificadorLinks();
     inicializarChamadaVoz();
+    inicializarGeradorSenha();
+    inicializarFormDenuncia();
     renderizarFaseJogo();
 });
 
-// 1. Controle de Modo Escuro (Manipulação de DOM / Acessibilidade)
+// Acessibilidade: Modo Escuro
 function inicializarTema() {
     const btnTema = document.getElementById("btn-tema");
     btnTema.addEventListener("click", () => {
-        const temaAtual = document.body.getAttribute("data-theme");
-        if (temaAtual === "dark") {
+        if (document.body.getAttribute("data-theme") === "dark") {
             document.body.removeAttribute("data-theme");
             btnTema.textContent = "🌓 Modo Escuro";
         } else {
@@ -61,7 +61,64 @@ function inicializarTema() {
     });
 }
 
-// 2. Sistema de Verificação de Links
+// NOVO: Verificador Visual da Galeria
+function verificarImagem(ehHumana) {
+    const container = document.getElementById("resultado-imagem");
+    container.className = "resultado";
+    
+    if (ehHumana) {
+        container.textContent = "🎯 Excelente escolha! A Imagem B mantém micro-texturas orgânicas e fundos simétricos coerentes, impossíveis para geradores simples de IA.";
+        container.classList.add("valido");
+        alterarTextoMascote("🤖 CyberGuard: Seu olho clínico está apurado! A IA frequentemente borra fundos complexos.");
+    } else {
+        container.textContent = "❌ Atenção! A Imagem A possui traços gerados sinteticamente por IA: reflexos de iluminação impossíveis nos olhos e ausência de brincos simétricos.";
+        container.classList.add("invalido");
+        alterarTextoMascote("🤖 CyberGuard: Não caia no truque da pele perfeita! Amplie e veja falhas nas orelhas e fundos.");
+    }
+    container.classList.remove("hidden");
+}
+
+// NOVO: Gerador de Senhas Robustas Anti-IA
+function inicializarGeradorSenha() {
+    const btn = document.getElementById("btn-gerar-senha");
+    const input = document.getElementById("input-senha-gerada");
+    
+    btn.addEventListener("click", () => {
+        const caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+=";
+        let senhaNova = "";
+        for (let i = 0; i < 14; i++) {
+            senhaNova += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        }
+        input.value = senhaNova;
+        alterarTextoMascote("🤖 CyberGuard: Senha blindada! Essa combinação demoraria anos para ser decodificada por ataques automatizados.");
+    });
+}
+
+// NOVO: Validador de Denúncias e Atualização de Contadores
+function inicializarFormDenuncia() {
+    const btn = document.getElementById("btn-denunciar");
+    const inputPerfil = document.getElementById("input-perfil");
+    const containerRes = document.getElementById("resultado-denuncia");
+    const numDisplay = document.getElementById("num-denuncias");
+
+    btn.addEventListener("click", () => {
+        if (!inputPerfil.value.trim()) {
+            alert("Preencha o campo do perfil antes de enviar.");
+            return;
+        }
+        contadorDenuncias++;
+        numDisplay.textContent = contadorDenuncias;
+        
+        containerRes.className = "resultado valido";
+        containerRes.textContent = "🚨 Alerta Simulador: Denúncia computada com sucesso! O algoritmo de monitoramento comunitário foi notificado.";
+        containerRes.classList.remove("hidden");
+        
+        inputPerfil.value = "";
+        alterarTextoMascote("🤖 CyberGuard: Ótimo trabalho! Denunciar contas automatizadas ajuda a purificar a internet.");
+    });
+}
+
+// Verificador de Links
 function inicializarVerificadorLinks() {
     const btnAnalisar = document.getElementById("btn-analisar");
     const inputUrl = document.getElementById("input-url");
@@ -71,25 +128,21 @@ function inicializarVerificadorLinks() {
         const url = inputUrl.value.trim().toLowerCase();
         if (!url) return;
 
-        containerResultado.className = "resultado"; // Limpa estados anteriores
-        
-        // Regras simples de validação demonstrativa para segurança
-        const contemSubdominioSuspeito = url.includes("ganhe-gratis") || url.includes("promocao-urgente") || url.includes("atualize-sua-senha");
-        const naoTemHttps = !url.startsWith("https://");
+        containerResultado.className = "resultado";
+        const fraudulento = url.includes("ganhe-gratis") || url.includes("urgente") || !url.startsWith("https://");
 
-        if (contemSubdominioSuspeito || naoTemHttps) {
-            containerResultado.textContent = "⚠️ Alerta de Risco! Este link possui padrões de engenharia social (URLs alarmistas ou ausência de protocolo seguro HTTPS). Não insira dados corporativos ou pessoais.";
+        if (fraudulento) {
+            containerResultado.textContent = "⚠️ Alerta de Risco! Estrutura maliciosa ou ausência de criptografia segura (HTTPS).";
             containerResultado.classList.add("invalido");
-            alterarTextoMascote("🤖 CyberGuard: Detectei riscos nessa URL! Links falsificados simulam portais reais mudando apenas uma letra.");
         } else {
-            containerResultado.textContent = "✅ Estrutura Inicial Comum. Contudo, lembre-se: mesmo links HTTPS podem abrigar fraudes de desinformação. Sempre valide a identidade do site oficial.";
+            containerResultado.textContent = "✅ Formato Comum. Mas lembre-se: cheque sempre o portal oficial da marca.";
             containerResultado.classList.add("valido");
-            alterarTextoMascote("🤖 CyberGuard: O formato básico parece padrão, mas mantenha-se vigilante sobre o remetente!");
         }
+        containerResultado.classList.remove("hidden");
     });
 }
 
-// 3. Simulador de Áudio Fake (Ligação com Clonagem de Voz por IA)
+// Simulador de Ligação por Voz IA
 function inicializarChamadaVoz() {
     const btnLigar = document.getElementById("btn-ligar");
     const btnDesligar = document.getElementById("btn-desligar");
@@ -98,15 +151,12 @@ function inicializarChamadaVoz() {
     btnLigar.addEventListener("click", () => {
         btnLigar.classList.add("hidden");
         btnDesligar.classList.remove("hidden");
-        statusChamada.textContent = "📞 EM LINHA COM: 'Seu Parente' (Voz Sintética)...";
+        statusChamada.textContent = "📞 EM LINHA: Clonagem de Voz de Parente...";
         
-        alterarTextoMascote("🤖 CyberGuard Alerta: Perceba a fala levemente robótica, sem respiração natural ou pausas humanas legítimas. Isto é engenharia social baseada em IA!");
-
-        // Executa a voz simulada usando Web Speech API
-        const textoDiscurso = "Oi! Sou eu, seu primo. Eu quebrei o meu celular e estou usando esse número provisório. Preciso que você faça uma transferência urgente para pagar o guincho do carro agora! Posso te passar a chave?";
+        const textoDiscurso = "Oi! Sou eu, seu primo. Meu telefone caiu na água e preciso que faça um PIX urgente para mim agora!";
         expressaoVoz = new SpeechSynthesisUtterance(textoDiscurso);
         expressaoVoz.lang = "pt-BR";
-        expressaoVoz.rate = 0.9; // Deixa o tom ligeiramente artificial
+        expressaoVoz.rate = 0.85; 
         
         expressaoVoz.onend = () => encerrarChamada();
         sinteseVoz.speak(expressaoVoz);
@@ -116,26 +166,20 @@ function inicializarChamadaVoz() {
 }
 
 function encerrarChamada() {
-    const btnLigar = document.getElementById("btn-ligar");
-    const btnDesligar = document.getElementById("btn-desligar");
-    const statusChamada = document.getElementById("status-chamada");
-
+    document.getElementById("btn-desligar").classList.add("hidden");
+    document.getElementById("btn-ligar").classList.remove("hidden");
+    document.getElementById("status-chamada").textContent = "Linha ociosa... Ligação terminada.";
     sinteseVoz.cancel();
-    btnDesligar.classList.add("hidden");
-    btnLigar.classList.remove("hidden");
-    statusChamada.textContent = "Linha ociosa... Ligação terminada.";
 }
 
-// 4. Mecânica de Jogo em Fases Compartilhadas
+// Mecânica do Jogo de Fases
 function renderizarFaseJogo() {
     const containerConteudo = document.getElementById("conteudo-fase");
     const containerFeedback = document.getElementById("feedback-jogo");
-    
     containerFeedback.classList.add("hidden");
 
     if (faseAtual >= dadosJogo.length) {
-        containerConteudo.innerHTML = `<h4>🎉 Parabéns! Você completou o treinamento básico!</h4><p>Sua pontuação final de cidadão consciente foi de ${pontuacao} pontos.</p>`;
-        alterarTextoMascote("🤖 CyberGuard: Incrível! Você demonstrou conhecimento sólido contra as ameaças de manipulação midiática contemporâneas!");
+        containerConteudo.innerHTML = `<h4>🎉 Treinamento Concluído!</h4><p>Pontuação final de cidadão consciente: ${pontuacao} pontos.</p>`;
         return;
     }
 
@@ -148,38 +192,32 @@ function renderizarFaseJogo() {
     });
 
     containerConteudo.innerHTML = `
-        <p class="pergunta-texto"><strong>Desafio:</strong> ${dadosFase.pergunta}</p>
+        <p><strong>Desafio:</strong> ${dadosFase.pergunta}</p>
         <div class="opcoes-container">${htmlOpcoes}</div>
     `;
-    
     alterarTextoMascote(dadosFase.dicaMascote);
 }
 
 function validarRespostaJogo(indiceSelecionado) {
     const containerFeedback = document.getElementById("feedback-jogo");
-    const dadosFase = dadosJogo[faseAtual];
-    const correta = dadosFase.opcoes[indiceSelecionado].correta;
+    const correta = dadosJogo[faseAtual].opcoes[indiceSelecionado].correta;
 
     containerFeedback.className = "resultado";
-
     if (correta) {
         pontuacao += 10;
-        document.getElementById("points").textContent = pontuacao;
-        containerFeedback.textContent = "🎯 Resposta Correta! Você identificou os critérios de segurança digital.";
+        document.getElementById("pontos").textContent = pontuacao;
+        containerFeedback.textContent = "🎯 Correto! Critério de segurança identificado.";
         containerFeedback.classList.add("valido");
     } else {
-        containerFeedback.textContent = "❌ Resposta Incorreta! Esse comportamento propaga a desinformação ou expõe você a perigos virtuais.";
+        containerFeedback.textContent = "❌ Incorreto! Isso pode espalhar perigos virtuais.";
         containerFeedback.classList.add("invalido");
     }
 
     containerFeedback.classList.remove("hidden");
-    
-    // Avança de fase de forma controlada por tempo para leitura do feedback
     faseAtual++;
-    setTimeout(renderizarFaseJogo, 4000);
+    setTimeout(renderizarFaseJogo, 3500);
 }
 
-// 5. Auxiliares Dinâmicos do Mascote
 function alterarTextoMascote(novoTexto) {
     document.getElementById("texto-mascote").textContent = novoTexto;
 }

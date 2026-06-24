@@ -35,3 +35,5 @@ Para o desenvolvimento da identidade visual, estrutura lógica e banco de dados 
 
 ---
 *Projeto catalogado sob a tag oficial: `#cidadaniadigital2026`*
+
+

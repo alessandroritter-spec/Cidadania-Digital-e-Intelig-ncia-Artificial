@@ -1,0 +1,263 @@
+/* ==========================================
+   CONFIGURAÇÕES GERAIS E PALETA DE CORES
+   ========================================== */
+:root {
+    --bg-principal: #0b0f19;
+    --bg-card: #161f30;
+    --texto: #f3f4f6;
+    --neon-azul: #00f2fe;
+    --neon-roxo: #4facfe;
+    --cor-alerta: #ff4757;
+    --cor-sucesso: #2ed573;
+}
+
+/* Variáveis para o Modo Escuro/Claro via JS */
+.modo-claro {
+    --bg-principal: #f0f2f5;
+    --bg-card: #ffffff;
+    --texto: #1f2937;
+    --neon-azul: #0066cc;
+    --neon-roxo: #7928ca;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-principal);
+    color: var(--texto);
+    transition: background-color 0.3s, color 0.3s;
+    padding-bottom: 80px; /* Espaço para o mascote fixo */
+}
+
+/* ==========================================
+   LAYOUT E CORPO (FLEXBOX)
+   ========================================== */
+header {
+    background-color: var(--bg-card);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    border-bottom: 2px solid var(--neon-roxo);
+}
+
+header h1 span {
+    color: var(--neon-azul);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: var(--texto);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+nav ul li a:hover {
+    color: var(--neon-azul);
+}
+
+#btn-acessibilidade {
+    background: linear-gradient(45deg, var(--neon-roxo), var(--neon-azul));
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+#btn-acessibilidade:hover {
+    transform: scale(1.05);
+}
+
+/* Container Principal */
+main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+section {
+    background-color: var(--bg-card);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: var(--neon-azul);
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* ==========================================
+   COMPONENTES ESPECÍFICOS (ÁUDIO, FORM, JOGO)
+   ========================================== */
+
+/* Player de Áudio */
+.audio-container {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+audio {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Verificador de Links e Formulários */
+.validador-form, form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input[type="url"], input[type="text"], select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #334155;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--texto);
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--neon-roxo);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:hover {
+    filter: brightness(1.2);
+}
+
+#resultado-verificacao {
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.seguro { background-color: rgba(46, 213, 115, 0.2); color: var(--cor-sucesso); border: 1px solid var(--cor-sucesso); }
+.perigo { background-color: rgba(255, 71, 87, 0.2); color: var(--cor-alerta); border: 1px solid var(--cor-alerta); }
+
+/* Área do Jogo */
+.placar {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-alternativa {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.btn-alternativa:hover {
+    background: linear-gradient(90deg, rgba(79, 172, 254, 0.2), transparent);
+    border-left: 4px solid var(--neon-azul);
+    padding-left: 25px;
+}
+
+/* ==========================================
+   MASCOTE BOT (FIXO NA TELA)
+   ========================================== */
+#mascote-bot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.balao-dialogo {
+    background-color: var(--bg-card);
+    border: 1px solid var(--neon-azul);
+    padding: 12px;
+    border-radius: 12px;
+    max-width: 220px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.icone-bot {
+    font-size: 40px;
+    background: var(--bg-card);
+    border: 2px solid var(--neon-roxo);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    animation: flutuar 3s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--bg-card);
+    margin-top: 40px;
+}
+
+/* Utilitários */
+.hidden { display: none !important; }
+
+/* ==========================================
+   RESPONSIVIDADE (AULA 4 - MEDIA QUERIES)
+   ========================================== */
+@media (max-width: 768px) {
+    header { flex-direction: column; gap: 15px; text-align: center; }
+    nav ul { gap: 10px; flex-wrap: wrap; justify-content: center; }
+    #mascote-bot { bottom: 10px; right: 10px; }
+    .balao-dialogo { max-width: 150px; font-size: 13px; }
+}

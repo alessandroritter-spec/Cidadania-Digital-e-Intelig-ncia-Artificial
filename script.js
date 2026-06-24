@@ -1,162 +1,188 @@
-/* ==========================================================================
-   1. SISTEMA DO JOGO COM VÁRIAS FASES (QUIZ ANTI-DESINFORMAÇÃO)
-   ========================================================================== */
-// Banco de dados das fases do jogo
-const bancoFases = [
+// ==========================================
+// 1. GERENCIAMENTO DE TEMA (MODO ESCURO)
+// ==========================================
+function toggleModoEscuro() {
+    document.body.classList.toggle('dark-mode');
+    
+    // Salva a preferência do usuário no navegador
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+// Aplica o tema salvo ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+    // Inicializa o jogo ao carregar a página
+    carregarFase();
+});
+
+
+// ==========================================
+// 2. VERIFICADOR INSTANTÂNEO DE LINKS
+// ==========================================
+const btnVerificar = document.getElementById('btn-verificar');
+const inputUrl = document.getElementById('input-url');
+const resultadoVerificacao = document.getElementById('resultado-verificacao');
+
+btnVerificar.addEventListener('click', () => {
+    const urlText = inputUrl.value.trim();
+    
+    if (!urlText) {
+        exibirResultado("Por favor, insira uma URL para analisar.", "aviso");
+        return;
+    }
+
+    resultadoVerificacao.classList.remove('hidden');
+    
+    // Termos comuns usados em links maliciosos ou falsos
+    const termosSuspeitos = ['ganhe', 'premios', 'vagas-urgentes', 'promocao', 'desconto-exclusivo', 'atualize-sua-conta'];
+    const possuiTermoSuspeito = termosSuspeitos.some(termo => urlText.toLowerCase().includes(termo));
+    
+    // Validação simplificada de domínios confiáveis comuns no Brasil
+    const dominiosConfiaveis = ['.gov.br', '.edu.br', '://globo.com', 'uol.com.br', 'estadao.com.br'];
+    const ehConfiavel = dominiosConfiaveis.some(dominio => urlText.toLowerCase().includes(dominio));
+
+    if (possuiTermoSuspeito && !ehConfiavel) {
+        exibirResultado("⚠ Alta probabilidade de golpe ou desinformação. O link usa termos alarmistas ou falsos.", "perigo");
+        atualizarTextoBot("Cuidado! Esse link parece suspeito. Não compartilhe seus dados.");
+    } else if (ehConfiavel) {
+        exibirResultado("✓ Este link parece pertencer a um domínio institucional ou de mídia reconhecida.", "sucesso");
+        atualizarTextoBot("Esse domínio parece seguro, mas sempre cheque o conteúdo da notícia!");
+    } else {
+        exibirResultado("⚡ Atenção: Domínio desconhecido. Verifique a fonte em canais oficiais antes de clicar.", "alerta");
+    }
+});
+
+function exibirResultado(mensagem, classe) {
+    resultadoVerificacao.className = `resultado-box ${classe}`;
+    resultadoVerificacao.innerHTML = `<p>${mensagem}</p>`;
+}
+
+
+// ==========================================
+// 3. JOGO: MISSÃO MÍDIA SEGURA
+// ==========================================
+const fasesJogo = [
     {
-        titulo: "Fase 1: O Vídeo do Político",
-        descricao: "Você recebeu um vídeo de um candidato confessando um crime na véspera da eleição. O movimento da boca parece levemente borrado e ele não pisca os olhos. O que você faz?",
+        titulo: "O Vídeo do Prefeito",
+        descricao: "Você recebeu um vídeo do prefeito da sua cidade anunciando feriado na próxima segunda-feira. A boca dele se move de forma desalinhada com o áudio e ele não pisca os olhos nenhuma vez. O que é?",
         alternativas: [
-            { texto: "Compartilho imediatamente nos grupos para alertar todo mundo.", correta: false, feedback: "Errado! Isso espalha desinformação. Rostos que não piscam ou borrões são sinais clássicos de Deepfake." },
-            { texto: "Não compartilho e procuro em portais de checagem confiáveis.", correta: true, feedback: "Excelente! Você agiu como um verdadeiro cidadão digital." }
-        ]
+            { texto: "Vídeo Real", correta: false },
+            { texto: "Deepfake / Gerado por IA", correta: true }
+        ],
+        justificativa: "Movimentos faciais artificiais e a falta de piscadas são sinais clássicos de Deepfakes de vídeo."
     },
     {
-        titulo: "Fase 2: A Ligação de Emergência",
-        descricao: "Seu telefone toca. Uma voz idêntica à do seu irmão diz que ele sofreu um acidente e precisa de um Pix urgente. O áudio está meio robótico ao fundo. Qual sua ação?",
+        titulo: "A Imagem Espacial",
+        descricao: "Uma foto da NASA mostra uma nova galáxia perfeitamente simétrica, com cores ultra saturadas em formato de coração. As estrelas ao fundo parecem derreter nas bordas. O que é?",
         alternativas: [
-            { texto: "Faço o Pix correndo para ajudar o mais rápido possível.", correta: false, feedback: "Perigo! Golpistas usam clonagem de voz por IA. Sempre desligue e ligue de volta para o número oficial do seu parente." },
-            { texto: "Desligo e ligo diretamente para o número do meu irmão para confirmar.", correta: true, feedback: "Perfeito! Quebrar o canal de comunicação impede os golpes de clonagem de voz por IA." }
-        ]
+            { texto: "Imagem Real da NASA", correta: false },
+            { texto: "Imagem Gerada por IA", correta: true }
+        ],
+        justificativa: "As IAs costumam criar padrões simétricos perfeitos demais ou apresentar distorções bizarras ('derretimentos') em detalhes de fundo."
     },
     {
-        titulo: "Fase 3: A Notícia do Super Desconto",
-        descricao: "Um site idêntico a um grande portal de e-commerce anuncia que, graças à IA deles, qualquer celular sai por R$ 50. A URL do site termina em '.net.ru/promocao'. É confiável?",
+        titulo: "O Áudio do WhatsApp",
+        descricao: "Seu tio enviou um áudio encaminhado muitas vezes. O locutor afirma, sem citar fontes oficiais, que um ingrediente de um alimento famoso foi proibido por causar mutações genéticas. O que é?",
         alternativas: [
-            { texto: "Com certeza, o design do site é idêntico ao original!", correta: false, feedback: "Cuidado! Clonar a identidade visual de um site com IA é facílimo. O segredo está em olhar o link esquisito." },
-            { texto: "Falso. Domínios estranhos e preços milagrosos indicam Phishing.", correta: true, feedback: "Incrível! Você concluiu o treinamento com sucesso!" }
-        ]
+            { texto: "Notícia Falsa / Desinformação", correta: true },
+            { texto: "Notícia Real", correta: false }
+        ],
+        justificativa: "Mensagens alarmistas, sem fontes oficiais, cheias de teorias conspiratórias e muito encaminhadas são características de Fake News."
     }
 ];
 
-let faseAtual = 0;
+let faseAtualIndex = 0;
 let pontuacao = 0;
 
-function processarResposta(ehCorreta) {
-    const faseDados = bancoFases[faseAtual];
-    
-    if (ehCorreta) {
-        pontuacao += 10;
-        document.getElementById('pontuacao').innerText = pontuacao;
-        atualizarMascote("🎉 Muito bem! Você acertou em cheio!");
-    } else {
-        atualizarMascote("⚠️ Cuidado! Esse é um truque comum da IA maliciosa.");
-    }
-    
-    alert(ehCorreta ? "Correto! \n\n" + faseDados.alternativas[1].feedback : "Aviso! \n\n" + faseDados.alternativas[0].feedback);
-
-    // Avançar de fase
-    faseAtual++;
-    if (faseAtual < bancoFases.length) {
-        carregarFase();
-    } else {
-        // Fim do Jogo
-        document.getElementById('container-fases').innerHTML = `
-            <div class="card-fase" style="text-align: center;">
-                <h3>🏆 Treinamento Concluído!</h3>
-                <p>Sua pontuação final foi de <strong>${pontuacao}</strong> pontos.</p>
-                <button onclick="reiniciarJogo()">Jogar Novamente</button>
-            </div>
-        `;
-        atualizarMascote("Parabéns! Você concluiu todas as fases e está protegido contra as fraudes de IA!");
-    }
-}
+const elFaseAtual = document.getElementById('fase-atual');
+const elPontuacao = document.getElementById('pontuacao');
+const elTituloFase = document.getElementById('titulo-fase');
+const elDescricaoFase = document.getElementById('descricao-fase');
+const containerAlternativas = document.querySelector('.alternativas');
 
 function carregarFase() {
-    const faseDados = bancoFases[faseAtual];
-    document.getElementById('fase-atual').innerText = faseAtual + 1;
-    document.getElementById('titulo-fase').innerText = faseDados.titulo;
-    document.getElementById('descricao-fase').innerText = faseDados.descricao;
+    if (faseAtualIndex >= fasesJogo.length) {
+        finalizarJogo();
+        return;
+    }
+
+    const fase = fasesJogo[faseAtualIndex];
+    elFaseAtual.textContent = faseAtualIndex + 1;
+    elTituloFase.textContent = fase.titulo;
+    elDescricaoFase.textContent = fase.descricao;
     
-    const containerAlternativas = document.querySelector('.alternativas');
-    containerAlternativas.innerHTML = ''; // Limpa anteriores
-    
-    faseDados.alternativas.forEach(alt => {
-        const btn = document.createElement('button');
-        btn.className = 'btn-alternativa';
-        btn.innerText = alt.texto;
-        btn.onclick = () => processarResposta(alt.correta);
-        containerAlternativas.appendChild(btn);
+    containerAlternativas.innerHTML = '';
+
+    fase.alternativas.forEach(alt => {
+        const botao = document.createElement('button');
+        botao.textContent = alt.texto;
+        botao.classList.add('btn-alternativa');
+        botao.addEventListener('click', () => verificarResposta(alt.correta, fase.justificativa));
+        containerAlternativas.appendChild(botao);
     });
 }
 
+function verificarResposta(ehCorreta, justificativa) {
+    // Desabilita os botões após a escolha
+    const botoes = containerAlternativas.querySelectorAll('button');
+    botoes.forEach(b => b.disabled = true);
+
+    if (ehCorreta) {
+        pontuacao += 10;
+        elPontuacao.textContent = pontuacao;
+        atualizarTextoBot("Muito bem! Você acertou.");
+        alert(`Correto! 🎉\n\n${justificativa}`);
+    } else {
+        atualizarTextoBot("Ih, essa você errou. Preste mais atenção aos detalhes!");
+        alert(`Incorreto... ❌\n\n${justificativa}`);
+    }
+
+    faseAtualIndex++;
+    setTimeout(carregarFase, 1000);
+}
+
+function finalizarJogo() {
+    elTituloFase.textContent = "Missão Concluída! 🏆";
+    elDescricaoFase.textContent = `Parabéns por finalizar o desafio! Sua pontuação final foi de ${pontuacao} pontos.`;
+    containerAlternativas.innerHTML = '<button onclick="reiniciarJogo()" class="btn-reiniciar">Jogar Novamente</button>';
+    atualizarTextoBot(`Você terminou o jogo com ${pontuacao} pontos! Excelente esforço.`);
+}
+
 function reiniciarJogo() {
-    faseAtual = 0;
+    faseAtualIndex = 0;
     pontuacao = 0;
-    document.getElementById('pontuacao').innerText = "0";
-    // Restaura a estrutura inicial do HTML do jogo
-    document.getElementById('container-fases').innerHTML = `
-        <div class="card-fase">
-            <h3 id="titulo-fase"></h3>
-            <p id="descricao-fase"></p>
-            <div class="alternativas"></div>
-        </div>
-    `;
+    elPontuacao.textContent = pontuacao;
     carregarFase();
 }
 
-/* ==========================================================================
-   2. VERIFICADOR DINÂMICO DE LINKS (DOMÍNIOS SUSPEITOS)
-   ========================================================================== */
-document.getElementById('btn-verificar').addEventListener('click', function() {
-    const urlDigitada = document.getElementById('input-url').value.trim();
-    const resultadoDiv = document.getElementById('resultado-verificacao');
-    
-    if (!urlDigitada) {
-        alert("Por favor, digite ou cole um link primeiro!");
-        return;
-    }
-    
-    resultadoDiv.classList.remove('hidden');
-    
-    // Algoritmo simples de análise de segurança de string (Critério Nível 4)
-    const ehSuspeito = urlDigitada.includes('.ru') || 
-                       urlDigitada.includes('.tk') || 
-                       urlDigitada.includes('promocao') || 
-                       urlDigitada.includes('ganhe-gratis') ||
-                       !urlDigitada.startsWith('https://');
 
-    if (ehSuspeito) {
-        resultadoDiv.className = "perigo";
-        resultadoDiv.innerHTML = "❌ ALERTA: Este link possui padrões fortemente associados a golpes de Phishing ou Desinformação automatizada.";
-        atualizarMascote("Atenção! Esse link parece malicioso. Não clique!");
-    } else {
-        resultadoDiv.className = "seguro";
-        resultadoDiv.innerHTML = "✅ ESTRUTURA PADRÃO: O domínio parece usar formatos comuns de segurança (HTTPS), mas lembre-se de conferir se o nome oficial está correto.";
-        atualizarMascote("O formato do link parece ok, mas fique sempre atento à fonte!");
-    }
-});
+// ==========================================
+// 4. FORMULÁRIO DE CONSCIENTIZAÇÃO
+// ==========================================
+const formPesquisa = document.getElementById('form-pesquisa');
 
-/* ==========================================================================
-   3. ACESSIBILIDADE (MODO ESCURO / CLARO)
-   ========================================================================== */
-function toggleModoEscuro() {
-    document.body.classList.toggle('modo-claro');
-    const botao = document.getElementById('btn-acessibilidade');
-    if(document.body.classList.contains('modo-claro')) {
-        botao.innerText = "Mudar Tema 🌙";
-    } else {
-        botao.innerText = "Mudar Tema 🌓";
-    }
-}
-
-/* ==========================================================================
-   4. SISTEMA DO MASCOTE (CYBERGUARD)
-   ========================================================================== */
-function atualizarMascote(mensagem) {
-    document.getElementById('texto-bot').innerHTML = mensagem;
-}
-
-// Configura o formulário para simular o envio de estatísticas sem recarregar a página
-document.getElementById('form-pesquisa').addEventListener('submit', function(e) {
+formPesquisa.addEventListener('submit', (e) => {
     e.preventDefault();
+    
     const nome = document.getElementById('nome').value;
-    alert(`Obrigado, ${nome}! Seus dados de percepção comunitária foram guardados para o nosso relatório.`);
-    atualizarMascote("Obrigado por enviar o formulário! Isso nos ajuda a combater a desinformação local.");
-    this.reset();
+    const experiencia = document.getElementById('experiencia').value;
+
+    if(nome && experiencia) {
+        atualizarTextoBot(`Obrigado pelo envio, ${nome}! Seus dados ajudam a fortalecer nossa comunidade.`);
+        alert("Dados enviados com sucesso! Obrigado por colaborar com a pesquisa comunitária.");
+        formPesquisa.reset();
+    }
 });
 
-// Inicializar o jogo assim que a página abrir
-window.onload = () => {
-    carregarFase();
-};
+
+// ==========================================
+// 5. INTERAÇÃO DINÂMICA DO MASCOTE (CYBERGUARD)
+// ==========================================
+function atualizarTextoBot(texto) {
+    const textoBot = document.getElementById('texto-bot');
+    textoBot.textContent = texto;
+}

@@ -1,4 +1,3 @@
-// Dados do Jogo de Fases
 const dadosJogo = [
     {
         fase: 1,
@@ -40,6 +39,7 @@ let expressaoVoz = null;
 
 document.addEventListener("DOMContentLoaded", () => {
     inicializarTema();
+    inicializarChatBot();
     inicializarVerificadorLinks();
     inicializarChamadaVoz();
     inicializarGeradorSenha();
@@ -61,24 +61,77 @@ function inicializarTema() {
     });
 }
 
-// NOVO: Verificador Visual da Galeria
+// Fale Conosco - Respostas Automatizadas do Bot
+function inicializarChatBot() {
+    const btnEnviar = document.getElementById("btn-enviar-chat");
+    const inputMensagem = document.getElementById("input-mensagem");
+    const containerResposta = document.getElementById("resposta-chat");
+
+    const respostasBot = [
+        {
+            chaves: ["deepfake", "video", "voz", "rostos", "clonagem"],
+            resposta: "🤖 CyberGuard: Deepfakes são vídeos ou áudios simulados por IA. Para identificar, repare em piscadas artificiais e ruídos vocais metálicos."
+        },
+        {
+            chaves: ["fake news", "desinformacao", "noticia", "mentira", "falsa"],
+            resposta: "🤖 CyberGuard: Notícias falsas automatizadas usam apelo emocional urgente. Sempre consulte canais de checagem confiáveis."
+        },
+        {
+            chaves: ["senha", "proteger", "seguranca", "seguro", "hacker"],
+            resposta: "🤖 CyberGuard: Proteja-se gerando senhas complexas na nossa ferramenta abaixo e ative a verificação em duas etapas (2FA)."
+        },
+        {
+            chaves: ["denuncia", "denunciar", "perfil", "reportar"],
+            resposta: "🤖 CyberGuard: Use o recurso de denúncia nativo das plataformas sociais e registre o perfil suspeito no nosso formulário no fim da página."
+        },
+        {
+            chaves: ["ola", "oi", "bom dia", "boa tarde", "ajuda"],
+            resposta: "🤖 CyberGuard: Olá! Estou aqui para sanar dúvidas sobre segurança digital. Pergunte sobre deepfakes, senhas ou fakes."
+        }
+    ];
+
+    btnEnviar.addEventListener("click", () => {
+        const mensagemUsuario = inputMensagem.value.trim().toLowerCase();
+        if (!mensagemUsuario) return;
+
+        containerResposta.className = "resultado valido";
+        let respostaEncontrada = null;
+
+        for (let item of respostasBot) {
+            if (item.chaves.some(chave => mensagemUsuario.includes(chave))) {
+                respostaEncontrada = item.resposta;
+                break;
+            }
+        }
+
+        if (!respostaEncontrada) {
+            respostaEncontrada = "🤖 CyberGuard: Não identifiquei essa dúvida. Tente usar termos chaves como 'deepfake', 'senha' ou 'notícia'.";
+            containerResposta.className = "resultado invalido";
+        }
+
+        containerResposta.textContent = respostaEncontrada;
+        containerResposta.classList.remove("hidden");
+        alterarTextoMascote(respostaEncontrada);
+        inputMensagem.value = "";
+    });
+}
+
+// Verificador Visual da Galeria
 function verificarImagem(ehHumana) {
     const container = document.getElementById("resultado-imagem");
     container.className = "resultado";
     
     if (ehHumana) {
-        container.textContent = "🎯 Excelente escolha! A Imagem B mantém micro-texturas orgânicas e fundos simétricos coerentes, impossíveis para geradores simples de IA.";
+        container.textContent = "🎯 Excelente escolha! A Imagem B mantém micro-texturas orgânicas e fundos simétricos coerentes.";
         container.classList.add("valido");
-        alterarTextoMascote("🤖 CyberGuard: Seu olho clínico está apurado! A IA frequentemente borra fundos complexos.");
     } else {
-        container.textContent = "❌ Atenção! A Imagem A possui traços gerados sinteticamente por IA: reflexos de iluminação impossíveis nos olhos e ausência de brincos simétricos.";
+        container.textContent = "❌ Atenção! A Imagem A possui traços gerados sinteticamente por IA.";
         container.classList.add("invalido");
-        alterarTextoMascote("🤖 CyberGuard: Não caia no truque da pele perfeita! Amplie e veja falhas nas orelhas e fundos.");
     }
     container.classList.remove("hidden");
 }
 
-// NOVO: Gerador de Senhas Robustas Anti-IA
+// Gerador de Senhas
 function inicializarGeradorSenha() {
     const btn = document.getElementById("btn-gerar-senha");
     const input = document.getElementById("input-senha-gerada");
@@ -90,11 +143,10 @@ function inicializarGeradorSenha() {
             senhaNova += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
         }
         input.value = senhaNova;
-        alterarTextoMascote("🤖 CyberGuard: Senha blindada! Essa combinação demoraria anos para ser decodificada por ataques automatizados.");
     });
 }
 
-// NOVO: Validador de Denúncias e Atualização de Contadores
+// Validador de Denúncias
 function inicializarFormDenuncia() {
     const btn = document.getElementById("btn-denunciar");
     const inputPerfil = document.getElementById("input-perfil");
@@ -102,19 +154,14 @@ function inicializarFormDenuncia() {
     const numDisplay = document.getElementById("num-denuncias");
 
     btn.addEventListener("click", () => {
-        if (!inputPerfil.value.trim()) {
-            alert("Preencha o campo do perfil antes de enviar.");
-            return;
-        }
+        if (!inputPerfil.value.trim()) return;
         contadorDenuncias++;
         numDisplay.textContent = contadorDenuncias;
         
         containerRes.className = "resultado valido";
-        containerRes.textContent = "🚨 Alerta Simulador: Denúncia computada com sucesso! O algoritmo de monitoramento comunitário foi notificado.";
+        containerRes.textContent = "🚨 Alerta Simulador: Denúncia computada com sucesso no monitoramento!";
         containerRes.classList.remove("hidden");
-        
         inputPerfil.value = "";
-        alterarTextoMascote("🤖 CyberGuard: Ótimo trabalho! Denunciar contas automatizadas ajuda a purificar a internet.");
     });
 }
 
@@ -132,10 +179,10 @@ function inicializarVerificadorLinks() {
         const fraudulento = url.includes("ganhe-gratis") || url.includes("urgente") || !url.startsWith("https://");
 
         if (fraudulento) {
-            containerResultado.textContent = "⚠️ Alerta de Risco! Estrutura maliciosa ou ausência de criptografia segura (HTTPS).";
+            containerResultado.textContent = "⚠️ Alerta de Risco! Estrutura maliciosa ou ausência de protocolo seguro (HTTPS).";
             containerResultado.classList.add("invalido");
         } else {
-            containerResultado.textContent = "✅ Formato Comum. Mas lembre-se: cheque sempre o portal oficial da marca.";
+            containerResultado.textContent = "✅ Formato Comum. Mas lembre-se de conferir canais de imprensa oficiais.";
             containerResultado.classList.add("valido");
         }
         containerResultado.classList.remove("hidden");
@@ -172,52 +219,14 @@ function encerrarChamada() {
     sinteseVoz.cancel();
 }
 
-// Mecânica do Jogo de Fases
+// Jogo de Fases
 function renderizarFaseJogo() {
     const containerConteudo = document.getElementById("conteudo-fase");
     const containerFeedback = document.getElementById("feedback-jogo");
     containerFeedback.classList.add("hidden");
 
     if (faseAtual >= dadosJogo.length) {
-        containerConteudo.innerHTML = `<h4>🎉 Treinamento Concluído!</h4><p>Pontuação final de cidadão consciente: ${pontuacao} pontos.</p>`;
+        containerConteudo.innerHTML = `<h4>🎉 Treinamento Concluído!</h4><p>Pontuação final: ${pontuacao} pontos.</p>`;
         return;
     }
 
-    const dadosFase = dadosJogo[faseAtual];
-    document.getElementById("fase-atual").textContent = dadosFase.fase;
-
-    let htmlOpcoes = "";
-    dadosFase.opcoes.forEach((opcao, indice) => {
-        htmlOpcoes += `<button class="btn-opcao" onclick="validarRespostaJogo(${indice})">${opcao.texto}</button>`;
-    });
-
-    containerConteudo.innerHTML = `
-        <p><strong>Desafio:</strong> ${dadosFase.pergunta}</p>
-        <div class="opcoes-container">${htmlOpcoes}</div>
-    `;
-    alterarTextoMascote(dadosFase.dicaMascote);
-}
-
-function validarRespostaJogo(indiceSelecionado) {
-    const containerFeedback = document.getElementById("feedback-jogo");
-    const correta = dadosJogo[faseAtual].opcoes[indiceSelecionado].correta;
-
-    containerFeedback.className = "resultado";
-    if (correta) {
-        pontuacao += 10;
-        document.getElementById("pontos").textContent = pontuacao;
-        containerFeedback.textContent = "🎯 Correto! Critério de segurança identificado.";
-        containerFeedback.classList.add("valido");
-    } else {
-        containerFeedback.textContent = "❌ Incorreto! Isso pode espalhar perigos virtuais.";
-        containerFeedback.classList.add("invalido");
-    }
-
-    containerFeedback.classList.remove("hidden");
-    faseAtual++;
-    setTimeout(renderizarFaseJogo, 3500);
-}
-
-function alterarTextoMascote(novoTexto) {
-    document.getElementById("texto-mascote").textContent = novoTexto;
-}

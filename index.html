@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Acessibilidade e Controles Globais -->
     <header>
         <div class="logo">Consciência Digital 2026</div>
         <button id="btn-tema" aria-label="Alternar modo escuro">🌓 Modo Escuro</button>
@@ -20,15 +19,43 @@
                 <div class="avatar-bot">🤖</div>
                 <div class="balao-dialogo">
                     <h2>Olá, Humano!</h2>
-                    <p id="texto-mascote">Sou o **CyberGuard**, seu assistente de segurança digital. Deepfakes e notícias falsas se espalham rápido. Vamos aprender a nos defender juntos?</p>
+                    <p id="texto-mascote">Sou o **CyberGuard**. Desinformação automatizada e deepfakes se espalham rápido. Vamos explorar as novas ferramentas de proteção juntas?</p>
                 </div>
             </div>
+        </section>
+
+        <!-- NOVO: Galeria Interativa Fato ou Fake (Imagens) -->
+        <section id="galeria-ia" class="card">
+            <h3>🖼️ Desafio Visual: Olhar Clínico Anti-IA</h3>
+            <p>A IA costuma falhar em detalhes como dentes excessivos, texturas de pele ultra-lisas e fundos distorcidos. Descubra qual imagem é REAL!</p>
+            <div class="galeria-container">
+                <div class="opcao-imagem" onclick="verificarImagem(false)">
+                    <div class="placeholder-img img-fake">🖼️ Perfil A</div>
+                    <p>Foto Perfeita (IA)</p>
+                </div>
+                <div class="opcao-imagem" onclick="verificarImagem(true)">
+                    <div class="placeholder-img img-real">📸 Perfil B</div>
+                    <p>Foto com Ruído Real (Humana)</p>
+                </div>
+            </div>
+            <div id="resultado-imagem" class="resultado hidden"></div>
+        </section>
+
+        <!-- NOVO: Gerador de Senhas Anti-IA -->
+        <section id="gerador-senha" class="card">
+            <h3>🔑 Gerador Guardião: Blindagem Contra IAs de Força Bruta</h3>
+            <p>IAs modernas quebram senhas simples em milissegundos. Gere uma combinação criptográfica robusta agora.</p>
+            <div class="gerador-container">
+                <button type="button" id="btn-gerar-senha">Gerar Senha Forte</button>
+                <input type="text" id="input-senha-gerada" readonly placeholder="Sua senha aparecerá aqui">
+            </div>
+            <p class="status">Dica: Nunca use dados pessoais sequenciais em logins.</p>
         </section>
 
         <!-- Ferramenta: Verificador de Links -->
         <section id="verificador" class="card">
             <h3>🔍 Verificador de Links Suspiciosos</h3>
-            <p>Recebeu um link no WhatsApp? Cole aqui para o CyberGuard analisar a estrutura básica.</p>
+            <p>Recebeu um link estranho? Cole aqui para o CyberGuard analisar a estrutura básica.</p>
             <form id="form-link" onsubmit="event.preventDefault();">
                 <label for="input-url">Cole a URL completa:</label>
                 <input type="url" id="input-url" placeholder="https://exemplo.com" required>
@@ -40,7 +67,7 @@
         <!-- Ferramenta: Chamada Fake (Simulador de Áudio de IA) -->
         <section id="chamada-fake" class="card">
             <h3>📞 Simulador de Golpe: Ligação com Clonagem de Voz</h3>
-            <p>Criminosos usam amostras de voz de segundos para clonar a voz de parentes por IA. Simule uma ligação abaixo.</p>
+            <p>Criminosos usam amostras curtas para clonar vozes conhecidas. Simule uma chamada suspeita.</p>
             <div class="controles-chamada">
                 <button id="btn-ligar" class="btn-sucesso">📱 Atender Chamada Fake</button>
                 <button id="btn-desligar" class="btn-perigo hidden">❌ Desligar</button>
@@ -55,12 +82,31 @@
                 <span>Fase: <strong id="fase-atual">1</strong>/3</span> | 
                 <span>Pontos: <strong id="pontos">0</strong></span>
             </div>
-            
-            <div id="conteudo-fase">
-                <!-- Inserido dinamicamente via JS -->
-            </div>
-
+            <div id="conteudo-fase"></div>
             <div id="feedback-jogo" class="resultado hidden"></div>
+        </section>
+
+        <!-- NOVO: Formulário de Denúncia com Contador Global -->
+        <section id="formulario-denuncia" class="card">
+            <h3>🚨 Central Comunitária de Alertas</h3>
+            <p>Encontrou um perfil robô propagando fake news? Simule o envio da denúncia para proteger a rede.</p>
+            <div class="contador-impacto">
+                Ameaças Simuladas Reportadas Hoje: <span id="num-denuncias">24</span>
+            </div>
+            <form id="form-denuncia" onsubmit="event.preventDefault();">
+                <label for="input-perfil">Link do Perfil ou Post Suspeito:</label>
+                <input type="text" id="input-perfil" placeholder="@usuario_fake_news ou link do post" required>
+                
+                <label for="select-tipo">Tipo de Infração:</label>
+                <select id="select-tipo" required>
+                    <option value="deepfake">Vídeo/Áudio Manipulado (Deepfake)</option>
+                    <option value="bot">Comportamento de Bot/Automação em Massa</option>
+                    <option value="noticia">Notícia Falsa com Fins Lucrativos</option>
+                </select>
+                
+                <button type="button" id="btn-denunciar" class="btn-perigo">Enviar Denúncia à Comunidade</button>
+            </form>
+            <div id="resultado-denuncia" class="resultado hidden"></div>
         </section>
     </main>
 

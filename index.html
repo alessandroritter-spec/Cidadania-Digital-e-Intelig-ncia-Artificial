@@ -24,7 +24,21 @@
             </div>
         </section>
 
-        <!-- NOVO: Galeria Interativa Fato ou Fake (Imagens) -->
+        <!-- Caixa de Fale Conosco com o Bot -->
+        <section id="fale-conosco" class="card">
+            <h3>💬 Pergunte ao CyberGuard (Fale Conosco)</h3>
+            <p>Tem alguma dúvida sobre IA ou segurança digital? Digite sua pergunta abaixo e nosso mascote responderá na hora!</p>
+            <div class="chat-container">
+                <form id="form-chat" onsubmit="event.preventDefault();">
+                    <label for="input-mensagem">Sua dúvida:</label>
+                    <input type="text" id="input-mensagem" placeholder="Ex: O que é uma deepfake? Como me proteger?" required>
+                    <button type="button" id="btn-enviar-chat">Enviar Pergunta</button>
+                </form>
+                <div id="resposta-chat" class="resultado hidden"></div>
+            </div>
+        </section>
+
+        <!-- Galeria Interativa Fato ou Fake (Imagens) -->
         <section id="galeria-ia" class="card">
             <h3>🖼️ Desafio Visual: Olhar Clínico Anti-IA</h3>
             <p>A IA costuma falhar em detalhes como dentes excessivos, texturas de pele ultra-lisas e fundos distorcidos. Descubra qual imagem é REAL!</p>
@@ -41,7 +55,7 @@
             <div id="resultado-imagem" class="resultado hidden"></div>
         </section>
 
-        <!-- NOVO: Gerador de Senhas Anti-IA -->
+        <!-- Gerador de Senhas Anti-IA -->
         <section id="gerador-senha" class="card">
             <h3>🔑 Gerador Guardião: Blindagem Contra IAs de Força Bruta</h3>
             <p>IAs modernas quebram senhas simples em milissegundos. Gere uma combinação criptográfica robusta agora.</p>
@@ -86,7 +100,7 @@
             <div id="feedback-jogo" class="resultado hidden"></div>
         </section>
 
-        <!-- NOVO: Formulário de Denúncia com Contador Global -->
+        <!-- Formulário de Denúncia com Contador Global -->
         <section id="formulario-denuncia" class="card">
             <h3>🚨 Central Comunitária de Alertas</h3>
             <p>Encontrou um perfil robô propagando fake news? Simule o envio da denúncia para proteger a rede.</p>
